@@ -1,0 +1,9 @@
+C:\Users\yonat\Google Drive\Computers\SmartHome\Df1ProtocolAnalyzer\Df1ProtocolAnalyzer\obj\Debug\netcoreapp1.1\Df1ProtocolAnalyzer.AssemblyInfo.cs
+C:\Users\yonat\Google Drive\Computers\SmartHome\Df1ProtocolAnalyzer\Df1ProtocolAnalyzer\bin\Debug\netcoreapp1.1\dfpa.deps.json
+C:\Users\yonat\Google Drive\Computers\SmartHome\Df1ProtocolAnalyzer\Df1ProtocolAnalyzer\bin\Debug\netcoreapp1.1\dfpa.runtimeconfig.json
+C:\Users\yonat\Google Drive\Computers\SmartHome\Df1ProtocolAnalyzer\Df1ProtocolAnalyzer\bin\Debug\netcoreapp1.1\dfpa.runtimeconfig.dev.json
+C:\Users\yonat\Google Drive\Computers\SmartHome\Df1ProtocolAnalyzer\Df1ProtocolAnalyzer\bin\Debug\netcoreapp1.1\dfpa.dll
+C:\Users\yonat\Google Drive\Computers\SmartHome\Df1ProtocolAnalyzer\Df1ProtocolAnalyzer\bin\Debug\netcoreapp1.1\dfpa.pdb
+C:\Users\yonat\Google Drive\Computers\SmartHome\Df1ProtocolAnalyzer\Df1ProtocolAnalyzer\obj\Debug\netcoreapp1.1\dfpa.dll
+C:\Users\yonat\Google Drive\Computers\SmartHome\Df1ProtocolAnalyzer\Df1ProtocolAnalyzer\obj\Debug\netcoreapp1.1\dfpa.pdb
+C:\Users\yonat\Google Drive\Computers\SmartHome\Df1ProtocolAnalyzer\Df1ProtocolAnalyzer\obj\Debug\netcoreapp1.1\Df1ProtocolAnalyzer.csprojResolveAssemblyReference.cache

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Df1ProtocolAnalyzer": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\Users\\yonat\\Downloads\\Smart\\SmartHouse-Trace-1.dat frame"
+    }
+  }
+}

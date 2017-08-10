@@ -39,7 +39,7 @@ namespace Df1ProtocolAnalyzer
 
                 var dfr = new Df1FrameReader(evfr);
                     
-                foreach (var frame in dfr.ReadFrame(evfr))
+                foreach (var frame in dfr.ReadFrame())
                 {
                     Console.WriteLine(frame.ToString());
                 }

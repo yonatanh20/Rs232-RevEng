@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Df1Frame.cs" />
     <Compile Include="Df1FrameReader.cs" />
     <Compile Include="EZViewFileReader.cs" />
     <Compile Include="Program.cs" />

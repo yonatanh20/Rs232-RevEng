@@ -12,7 +12,7 @@ namespace Df1ProtocolAnalyzer
         Error
     }
 
-    public enum Df1TransmissionSymbols
+    public enum TxSymbols
     {
         STX = 0x02,
         ETX = 0x03,

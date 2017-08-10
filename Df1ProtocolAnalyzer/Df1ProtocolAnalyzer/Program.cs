@@ -25,8 +25,8 @@ namespace Df1ProtocolAnalyzer
                         curOrg = evfr.Originator;
                     }   
 
-                    var valName = Enum.IsDefined(typeof(Df1TransmissionSymbols), (int)evfr.DataByte) ? 
-                        Enum.GetName(typeof(Df1TransmissionSymbols), evfr.DataByte) : evfr.DataByte.ToString("X2");
+                    var valName = Enum.IsDefined(typeof(TxSymbols), (int)evfr.DataByte) ? 
+                        Enum.GetName(typeof(TxSymbols), evfr.DataByte) : evfr.DataByte.ToString("X2");
 
                     Console.WriteLine($"{evfr.Originator.ToString()}\t{valName}");
                 }

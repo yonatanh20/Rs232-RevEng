@@ -1,0 +1,6 @@
+C:\Users\yonat\Google Drive\Computers\SmartHome\Rs232-RevEng\Df1ProtocolAnalyzer\bin\Debug\Df1ProtocolAnalyzer.exe.config
+C:\Users\yonat\Google Drive\Computers\SmartHome\Rs232-RevEng\Df1ProtocolAnalyzer\bin\Debug\Df1ProtocolAnalyzer.exe
+C:\Users\yonat\Google Drive\Computers\SmartHome\Rs232-RevEng\Df1ProtocolAnalyzer\bin\Debug\Df1ProtocolAnalyzer.pdb
+C:\Users\yonat\Google Drive\Computers\SmartHome\Rs232-RevEng\Df1ProtocolAnalyzer\obj\x86\Debug\Df1ProtocolAnalyzer.csprojResolveAssemblyReference.cache
+C:\Users\yonat\Google Drive\Computers\SmartHome\Rs232-RevEng\Df1ProtocolAnalyzer\obj\x86\Debug\Df1ProtocolAnalyzer.exe
+C:\Users\yonat\Google Drive\Computers\SmartHome\Rs232-RevEng\Df1ProtocolAnalyzer\obj\x86\Debug\Df1ProtocolAnalyzer.pdb

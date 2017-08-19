@@ -28,6 +28,8 @@ namespace Df1ProtocolAnalyzer
             }
         }
 
+        bool _outOfData = false;
+
         FrameStates _dceState = FrameStates.Unsynced;
         FrameStates _dteState = FrameStates.Unsynced;
 
@@ -45,6 +47,7 @@ namespace Df1ProtocolAnalyzer
 		}
 
 		#region Dual channel ByteRef queue reader
+
 		Queue<ByteRef> _dceQueue = new Queue<ByteRef>();
 		Queue<ByteRef> _dteQueue = new Queue<ByteRef>();
 
@@ -84,9 +87,11 @@ namespace Df1ProtocolAnalyzer
 					//Console.WriteLine(String.Format("Requested DTE byte = {0} \n", _dteQueue.Peek().Data));
 					return oper();
 				}
-				if (evfr.Read() < 0)
-					return default(ByteRef);
-
+                if (evfr.Read() < 0)
+                {
+                    _outOfData = true;
+                    return default(ByteRef);
+                }
 				switch (evfr.Originator)
 				{
 					case Originators.DCE:
@@ -100,9 +105,14 @@ namespace Df1ProtocolAnalyzer
 			}
 			while (true);
 		}
-		#endregion
+        #endregion
 
-		public IEnumerable<Frame>ReadFrame()
+
+
+        #region Dual channel Frame extractor
+        public delegate void FrameOperDelegate();
+
+        public IEnumerable<Frame>ReadFrame()
         {
 			EZViewFileReader evfr = _evfr;
 
@@ -128,7 +138,7 @@ namespace Df1ProtocolAnalyzer
                     }
                 }
 
-                if (_dteState == FrameStates.Unsynced && _dceState == FrameStates.WaitingForAck)
+                else if (_dteState == FrameStates.Unsynced && _dceState == FrameStates.WaitingForAck)
                 {
                     //Catch Up
                     do
@@ -140,7 +150,7 @@ namespace Df1ProtocolAnalyzer
                     _dteState = FrameStates.GivingAck;
                 }
 
-                if (_dceState == FrameStates.InFrame)
+                else if (_dceState == FrameStates.InFrame)
                 {
                     _dceByte = PopByte(evfr, Originators.DCE);
                     
@@ -170,12 +180,14 @@ namespace Df1ProtocolAnalyzer
                             {
                                 //Later and Nak cases
                                 _dceState = FrameStates.Unsynced;
+                                
                             }
                         }
                         else
                         {
                             //Unexpected byte after DLE meanning we need to reset the frame. 
                             _dceState = FrameStates.Unsynced;
+                            
                         }
 
                     }
@@ -184,8 +196,8 @@ namespace Df1ProtocolAnalyzer
                         _dceFrame.AddToFrame(_dceByte.Data);
                     }
                 }
-                
-                if (_dteState == FrameStates.InFrame)
+
+                else if (_dteState == FrameStates.InFrame)
                 {
                     _dteByte = PopByte(evfr, Originators.DTE);
 
@@ -219,6 +231,7 @@ namespace Df1ProtocolAnalyzer
                             else
                             {
                                 _dteState = FrameStates.Unsynced;
+                                
                             }
                         }
                         else
@@ -226,6 +239,7 @@ namespace Df1ProtocolAnalyzer
                             //Unexpected byte after DLE meanning we need to reset the frame.
                             //Later and Nak cases
                             _dteState = FrameStates.Unsynced;
+                            
                         }
 
                     }
@@ -234,15 +248,17 @@ namespace Df1ProtocolAnalyzer
                         if (!_dteFrame.AddToFrame(_dteByte.Data))
                         {
                             //The Frame is too long so we will reset it
+                            
                             _dceState = FrameStates.Unsynced;
 
                         }
                     }
                 }
-                
-                if (_dceState == FrameStates.WaitingForAck && _dteState == FrameStates.GivingAck)
+
+                else if (_dceState == FrameStates.WaitingForAck && _dteState == FrameStates.GivingAck)
                 {
-                    
+
+
                     if ((TxSymbols)_dteByte.Data == TxSymbols.DLE)
                     {
                         _dteByte = PopByte(evfr, Originators.DTE);
@@ -252,9 +268,8 @@ namespace Df1ProtocolAnalyzer
                             _dceState = FrameStates.GivingAck;
                             _dteState = FrameStates.OutOfFrame;
                             _dceFrame.FrameAcknowledged = true;
-
-
-							yield return _dceFrame;
+                            
+                            yield return _dceFrame;
 							_dceFrame = null;
 						}
                         else if ((TxSymbols)_dteByte.Data == TxSymbols.NAK)
@@ -265,6 +280,7 @@ namespace Df1ProtocolAnalyzer
                         }
                         else
                         {
+                            
                             _dteState = FrameStates.Unsynced;
                             _dceState = FrameStates.Unsynced;
                             _dteFrame.FrameAcknowledged = false;
@@ -273,6 +289,7 @@ namespace Df1ProtocolAnalyzer
                     }
                     else
                     {
+                        
                         _dteState = FrameStates.Unsynced;
                         _dceState = FrameStates.Unsynced;
                         _dteFrame.FrameAcknowledged = false;
@@ -281,10 +298,10 @@ namespace Df1ProtocolAnalyzer
 
                 }
 
-                if (_dceState == FrameStates.GivingAck && _dteState == FrameStates.WaitingForAck)
+                else if (_dceState == FrameStates.GivingAck && _dteState == FrameStates.WaitingForAck)
                 {
 
-                    if ((TxSymbols)_dceByte.Data == TxSymbols.DLE)
+                     if ((TxSymbols)_dceByte.Data == TxSymbols.DLE)
                     {
                         _dceByte = PopByte(evfr, Originators.DCE);
 
@@ -294,8 +311,7 @@ namespace Df1ProtocolAnalyzer
                             _dteState = FrameStates.GivingAck;
                             _dceState = FrameStates.OutOfFrame;
                             _dteFrame.FrameAcknowledged = true;
-
-							yield return _dteFrame;
+                            yield return _dteFrame;
 							_dteFrame = null;
 						}
                         else if ((TxSymbols)_dceByte.Data == TxSymbols.NAK)
@@ -306,6 +322,7 @@ namespace Df1ProtocolAnalyzer
                         }
                         else
                         {
+                            
                             _dteState = FrameStates.Unsynced;
                             _dceState = FrameStates.Unsynced;
                             _dteFrame.FrameAcknowledged = false;
@@ -314,6 +331,7 @@ namespace Df1ProtocolAnalyzer
                     }
                     else
                     {
+                        
                         _dteState = FrameStates.Unsynced;
                         _dceState = FrameStates.Unsynced;
                         _dteFrame.FrameAcknowledged = false;
@@ -321,35 +339,23 @@ namespace Df1ProtocolAnalyzer
                     }
                 }
 
-                if (_dteState == FrameStates.OutOfFrame || _dceState == FrameStates.OutOfFrame)
+                else if (_dteState == FrameStates.OutOfFrame || _dceState == FrameStates.OutOfFrame)
                 {
 
                     if (_dteState == FrameStates.OutOfFrame)
                     {
-                        _dteByte = PopByte(evfr, Originators.DTE);
-
-                        if ((TxSymbols)_dteByte.Data == TxSymbols.DLE)
+                        if (ParseNewFrame(Originators.DTE))
                         {
-                            _dteByte = PopByte(evfr, Originators.DTE);
-                            if ((TxSymbols)_dteByte.Data == TxSymbols.STX)
-                            {
-                                _dteFrame = new Frame(_dteByte.Timestamp, Originators.DTE);
-                                _dteState = FrameStates.InFrame;
-                            }
+                            _dteFrame = new Frame(_dteByte.Timestamp, Originators.DTE);
+                            _dteState = FrameStates.InFrame;
                         }
                     }
                     else
                     {
-                        _dceByte = PopByte(evfr, Originators.DCE);
-
-                        if ((TxSymbols)_dceByte.Data == TxSymbols.DLE)
+                        if (ParseNewFrame(Originators.DCE))
                         {
-                            _dceByte = PopByte(evfr, Originators.DCE);
-                            if ((TxSymbols)_dceByte.Data == TxSymbols.STX)
-                            {
-                                _dceFrame = new Frame(_dceByte.Timestamp, Originators.DCE);
-                                _dceState = FrameStates.InFrame;
-                            }
+                            _dceFrame = new Frame(_dceByte.Timestamp, Originators.DCE);
+                            _dceState = FrameStates.InFrame;
                         }
                     }
 					
@@ -358,29 +364,62 @@ namespace Df1ProtocolAnalyzer
 
 
             }
-            while (PeekByte(evfr, Originators.DCE).Timestamp.Year != 1 || PeekByte(evfr, Originators.DTE).Timestamp.Year != 1);
+            while (!_outOfData);
         }
 
-        bool ConstructFrame(Originators originator , ByteRef byteRef)
+        bool ParseNewFrame(Originators originator)
         {
-            return true;
-        }
-        bool GetAck()
-        {
-            return true;
-        }
-        bool StartFrame()
-        {
-            return true;
-        }
-        bool CatchUp()
-        {
-            return true;
-        }
-        
+            EZViewFileReader evfr = _evfr;
 
-        int FrameErrors { get; set; }
+             ByteRef byteref = PopByte(evfr, originator);
 
+            if ((TxSymbols)byteref.Data == TxSymbols.DLE)
+            {
+                byteref = PopByte(evfr, originator);
+                if ((TxSymbols)byteref.Data == TxSymbols.STX)
+                {
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+
+        bool GivingAcknowledge(Originators originator, ByteRef byteRef, Frame frame)
+        {
+
+            EZViewFileReader evfr = _evfr;
+            
+            if ((TxSymbols)byteRef.Data == TxSymbols.DLE)
+            {
+                byteRef = PopByte(evfr, originator);
+                if ((TxSymbols)byteRef.Data == TxSymbols.ACK)
+                {
+                    originator = originator == Originators.DCE ? Originators.DTE : Originators.DCE;
+                    byteRef = PopByte(evfr, originator);
+                    frame.FrameAcknowledged = true;
+                    return true;
+                }
+                else if ((TxSymbols)byteRef.Data == TxSymbols.NAK)
+                {
+                    //NAK
+                    //Add code
+                    //
+                    frame.FrameAcknowledged = false;
+                    return false;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        #endregion
         bool CheckCrc(Frame frame)
         {
 

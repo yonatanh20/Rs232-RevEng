@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Df1ProtocolAnalyzer
 {
-    class Df1CommandReader
+    public class Df1CommandReader
     {
         Df1FrameReader _dfr;
         public Df1CommandReader(Df1FrameReader dfr)
@@ -18,7 +18,6 @@ namespace Df1ProtocolAnalyzer
         {
             Frame commandFrame = null;
             Frame replyFrame = null;
-            Df1BaseCmd df1Command = null;
             var dfr = _dfr;
             int prevTransaction = 0;
 

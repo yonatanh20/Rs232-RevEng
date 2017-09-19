@@ -85,7 +85,7 @@ namespace Df1ProtocolAnalyzer
             ElementNumber = TakeVarInt2(CommandFrame.Data, ref idx);
             SubElementNumber = TakeVarInt2(CommandFrame.Data, ref idx);           
 
-            Data = new ArraySegment<byte>(CommandFrame.Data, idx, BytesRequested).ToArray();
+            Data = new ArraySegment<byte>(replyFrame.Data, 0, BytesRequested).ToArray();
         }
 
         public override string ToString()

@@ -8,60 +8,110 @@ namespace Df1ProtocolAnalyzer
         {
             if (args.Length < 1)
             {
-                Console.WriteLine("Usage: dfpa <ezview-file.dat> <raw|frame|command");
+                Console.WriteLine("Usage: dfpa <ezview-file.dat> <raw|frame|command|changes|playback> <reg|spool>");
                 return;
             }
 
-            if (args.Length > 1 && args[1].Equals("raw", StringComparison.OrdinalIgnoreCase))
+            if (args.Length > 2 && args[1].Equals("raw", StringComparison.OrdinalIgnoreCase))
             {
-                var evfr = new EZViewFileReader(args[0]);
+                IRS232Reader evr;
+                if (args[2].Equals("reg", StringComparison.OrdinalIgnoreCase))
+                    evr = new EZViewFileReader(args[0]);
+                else 
+                    evr = new EZViewSpoolReader(args[0]);
                 var curOrg = Originators.Error;
 
-                while (evfr.Read() >= 0)
+                foreach (var byteDeff in evr.Read())
                 {
-                    if (curOrg != evfr.Originator)
+                    if (curOrg != byteDeff.Originator)
                     {
-                        Console.WriteLine(evfr.Timestamp);
-                        curOrg = evfr.Originator;
+                        Console.WriteLine(byteDeff.Timestamp);
+                        curOrg = byteDeff.Originator;
                     }
-
-                    var valName = Enum.IsDefined(typeof(TxSymbols), (int)evfr.DataByte) ?
-                        Enum.GetName(typeof(TxSymbols), evfr.DataByte) : evfr.DataByte.ToString("X2");
-
-                    Console.WriteLine($"{evfr.Originator.ToString()}\t{valName}");
+                    Console.WriteLine($"{byteDeff.Originator} - {byteDeff.DataByte}");
                 }
-
-                Console.WriteLine("");
+                
             }
             else if (args.Length > 1 && args[1].Equals("frame", StringComparison.OrdinalIgnoreCase))
             {
-                var evfr = new EZViewFileReader(args[0]);
+                IRS232Reader evr;
 
-                var dfr = new Df1FrameReader(evfr);
+                if (args[2].Equals("reg", StringComparison.OrdinalIgnoreCase))
+                    evr = new EZViewFileReader(args[0]);
+                else
+                    evr = new EZViewSpoolReader(args[0]);
+
+                var dfr = new Df1FrameReader(evr);
 
                 foreach (var frame in dfr.ReadFrame())
                 {
                     Console.WriteLine(frame.ToString());
                 }
-
-                Console.WriteLine("");
             }
             else if (args.Length > 1 && args[1].Equals("command", StringComparison.OrdinalIgnoreCase))
             {
-                var evfr = new EZViewFileReader(args[0]);
+                IRS232Reader evr;
 
-                var dfr = new Df1FrameReader(evfr);
+                if (args[2].Equals("reg", StringComparison.OrdinalIgnoreCase))
+                    evr = new EZViewFileReader(args[0]);
+                else
+                    evr = new EZViewSpoolReader(args[0]);
+
+                var dfr = new Df1FrameReader(evr);
 
                 var dcr = new Df1CommandReader(dfr);
 
                 foreach (var command in dcr.ReadCommand())
                 {
                     Console.WriteLine(command.ToString());
-                    //if (analyzedFrame.FunctionType == FunctionTypes.ProtectedWrite)
-                    //    Console.WriteLine(analyzedFrame.ToString());
-                    //else if (analyzedFrame.FunctionType == FunctionTypes.ProtectedRead)
-                    //    //if (analyzedFrame.CommandFrame.FrameData[0] >= 16) ;
-                    //    Console.WriteLine(analyzedFrame.ToString());
+                }
+            }
+            else if (args.Length > 1 && args[1].Equals("changes", StringComparison.OrdinalIgnoreCase))
+            {
+                IRS232Reader evr;
+
+                if (args[2].Equals("reg", StringComparison.OrdinalIgnoreCase))
+                    evr = new EZViewFileReader(args[0]);
+                else
+                    evr = new EZViewSpoolReader(args[0]);
+
+                var dfr = new Df1FrameReader(evr);
+
+                var dcr = new Df1CommandReader(dfr);
+
+                var ppl = new PlcPlayback(dcr);
+
+                foreach (var prc in ppl.PlcChanges())
+                {
+                    Console.WriteLine(prc.ToString());
+                }
+            }
+            else if (args.Length > 1 && args[1].Equals("playback", StringComparison.OrdinalIgnoreCase))
+            {
+                var dbu = new DBUtil();
+
+                PlcControl.DbUtil = dbu;
+
+                IRS232Reader evr;
+
+                if (args[2].Equals("reg", StringComparison.OrdinalIgnoreCase))
+                    evr = new EZViewFileReader(args[0]);
+                else
+                    evr = new EZViewSpoolReader(args[0]);
+
+                var dfr = new Df1FrameReader(evr);
+
+                var dcr = new Df1CommandReader(dfr);
+
+                var ppl = new PlcPlayback(dcr);     
+                
+                foreach (var prc in ppl.PlcChanges())
+                {
+                    foreach (var changedbit in prc.ChangedBits)
+                    {
+                        var plc = new PlcControl(prc, changedbit);
+                        Console.WriteLine(plc.ToString());
+                    }
                 }
             }
 

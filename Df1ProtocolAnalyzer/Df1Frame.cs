@@ -122,7 +122,7 @@ namespace Df1ProtocolAnalyzer
         {
             if (Type == FrameType.Command)
             {
-                return String.Format("{1:mm:ss} {0}({6}) Command({4}) Function({10})  Status {5}  " +
+                return String.Format("{1:HH:mm:ss.ffff} {0}({6}) Command({4}) Function({10})  Status {5}  " +
                     "\nData Size - {7}  Data - {8}" +
                     "\n----ACK - {9} \n\n"
                     , Originator, TimeStamp,
@@ -132,7 +132,7 @@ namespace Df1ProtocolAnalyzer
             }
             else
             {
-                return String.Format("{1:mm:ss} {0}({6}) Command({4})  Status {5}  " +
+                return String.Format("{1:HH:mm:ss.ffff} {0}({6}) Command({4})  Status {5}  " +
                     "\nData Size - {7}  Data - {8}" +
                     "\n----ACK - {9} \n\n"
                     , Originator, TimeStamp,

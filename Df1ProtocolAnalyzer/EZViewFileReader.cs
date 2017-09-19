@@ -22,7 +22,7 @@ namespace Df1ProtocolAnalyzer
         DLE = 0x10
     };
 
-    public class EZViewFileReader
+    public class EZViewFileReader : IRS232Reader
     {
         const int EOF = -1;
         const int EZV_DATA_START = 66;
@@ -42,12 +42,10 @@ namespace Df1ProtocolAnalyzer
             _baseDate = new DateTime(2001, 1, 1, 0, 0, 0).AddSeconds(BitConverter.ToInt32(header, 38)+fudge);
         }
 
-        public int Read()
+        public IEnumerable<ByteDef> Read()
         {
-            if (_fileStream.Read(_data, 0, _data.Length) < _data.Length)
-                return EOF;
-
-            return _data[7];
+            if (!(_fileStream.Read(_data, 0, _data.Length) < _data.Length))
+                yield return new ByteDef(DataByte, Timestamp, Originator);
         }
 
         public byte DataByte
@@ -57,15 +55,7 @@ namespace Df1ProtocolAnalyzer
                 return _data[7];
             }
         }
-
-        public byte PeekByte
-        {
-            get
-            {
-                return _data[7];
-            }
-        }
-
+        
         public DateTime Timestamp
         {
             get
@@ -74,15 +64,7 @@ namespace Df1ProtocolAnalyzer
                 return _baseDate.AddMilliseconds(Convert.ToDouble(epochSecs));
             }
         }
-
-        public int TimeOffset
-        {
-            get
-            {
-                return BitConverter.ToInt32(_data, 2);
-            }
-        }
-
+        
         public Originators Originator
         {
             get

@@ -109,6 +109,10 @@ namespace Df1ProtocolAnalyzer
         public IEnumerable<Frame>ReadFrame()
         {
             IRS232Reader evr = _evr;
+            for (int i = 0; i < 1000; i++)
+            {
+                _byteDefReader.MoveNext();
+            }
 			do
             {
                 

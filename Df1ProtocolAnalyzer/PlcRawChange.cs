@@ -18,6 +18,7 @@ namespace Df1ProtocolAnalyzer
         public int ElementNumber { get; private set; } = 0;
         public int SubElementNumber { get; private set; } = 0;
         public Type CommandType { get; private set; }
+        public DateTime TimeStamp { get; private set; }
 
         public List<Tuple<int, bool>> ChangedBits { get; private set; } = new List<Tuple<int, bool>>();
 
@@ -30,7 +31,7 @@ namespace Df1ProtocolAnalyzer
 
             OldData = oldData;
             NewCommand = newCommand;
-
+            TimeStamp = NewCommand.CommandFrame.TimeStamp;
             if ((prNew = NewCommand as ProtectedReadCmd) != null)
             {
                 FileNumber = prNew.FileNumber;

@@ -14,11 +14,13 @@ namespace Df1ProtocolAnalyzer
         public FileTypes FileType { get; private set; } = 0;
         public int ElementNumber { get; private set; } = 0;
         public int SubElementNumber { get; private set; } = 0;
+        public DateTime TimeStamp { get; private set; }
 
         public int Offset { get; private set; } = 0;
         public bool OnOff { get; private set; } = false;
 
         public int IntVal { get; private set; } = 0;
+
 
         public object State { get; set; }
         public string Text { get; set; }
@@ -37,10 +39,15 @@ namespace Df1ProtocolAnalyzer
             OnOff = chg.Item2;
             CommandType = plc.CommandType;
             IntVal = BitConverter.ToInt16(plc.NewData, (Offset/8) - (Offset/8) % 2 );
+            TimeStamp = plc.TimeStamp;
+
             if (FileType == FileTypes.Integer)
                 Key = $"{FileNumber:X2}-{FileType}-{ElementNumber:X2}-{SubElementNumber:X2}-{(Offset / 8) - (Offset / 8) % 2:X}";
             else
                 Key = $"{FileNumber:X2}-{FileType}-{ElementNumber:X2}-{SubElementNumber:X2}-{Offset:X}";
+
+
+            
 
             if (s_NameLookup.ContainsKey(Key))  // Name already known
             {
@@ -52,18 +59,28 @@ namespace Df1ProtocolAnalyzer
             }
             else    // Lookup in database (add if does not exist)
             {
-                var name = DbUtil.LookupControl(this);
+                var c_Name = DbUtil.LookupControl(this);
 
-                if (name == null) // Need to insert a new control
+                if (c_Name == null) // Need to insert a new control
                 {
                     DbUtil.AddControl(this);
                     this.Name = Key;
                 }
                 else
                 {
-                    this.Name = name;
+                    this.Name = c_Name;
                 }
 
+            }
+            var h_Name = DbUtil.LookupHistory(this);
+
+            if (h_Name == null) // Need to insert a new history documentation
+            {
+                DbUtil.AddHistory(this);
+            }
+            else
+            {
+                //This action was already documented.
             }
         }
 

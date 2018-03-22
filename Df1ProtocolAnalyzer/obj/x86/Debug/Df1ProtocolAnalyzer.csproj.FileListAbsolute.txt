@@ -13,3 +13,4 @@ C:\Users\yonat\Google Drive\Computers\SmartHome\Rs232-RevEng\Df1ProtocolAnalyzer
 C:\Users\yonat\Google Drive\Computers\SmartHome\Rs232-RevEng\Df1ProtocolAnalyzer\EntityFramework.SqlServer.xml
 C:\Users\yonat\Google Drive\Computers\SmartHome\Rs232-RevEng\Df1ProtocolAnalyzer\System.Data.SQLite.xml
 C:\Users\yonat\Google Drive\Computers\SmartHome\Rs232-RevEng\Df1ProtocolAnalyzer\System.Data.SQLite.dll.config
+C:\Users\yonat\Google Drive\Computers\SmartHome\Rs232-RevEng\Df1ProtocolAnalyzer\obj\x86\Debug\Df1ProtocolAnalyzer.csproj.CoreCompileInputs.cache

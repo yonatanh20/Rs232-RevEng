@@ -13,6 +13,8 @@ namespace Df1ProtocolAnalyzer
     {
         const string _pattern = @"^([0-9]+)\t([^ ]+ [^\t]+)\t([^\t]*)?\t([^\t]*)?\t([^\t]*)?\t([^\t]*)?\t$";
         const string _dateFormat = @"MM/dd/yy HH:mm:ssffffff";
+        //Date format : "09/19/17 17:41:05046000"
+
         string _filepath = "";
 
         Regex _re = new Regex(_pattern);
@@ -36,6 +38,7 @@ namespace Df1ProtocolAnalyzer
             string line;
 
             var sr = new StreamReader(_file);
+            var streamEndLoop = 0;
             while (true)
             {
                 if (sr.EndOfStream)
@@ -48,7 +51,14 @@ namespace Df1ProtocolAnalyzer
                     _file.Seek(0, SeekOrigin.End);
                     var endPos = _file.Position;
                     if (endPos <= pos)
-                        continue;
+                    {
+                        if (streamEndLoop < 3)
+                        {
+                            streamEndLoop++;
+                            continue;
+                        }
+                        break;
+                    }
                     _file.Seek(pos, SeekOrigin.Begin);
                     sr.DiscardBufferedData();
                     
@@ -68,6 +78,11 @@ namespace Df1ProtocolAnalyzer
                     }
                     catch
                     {
+                        Console.WriteLine("Error Pasing Date");
+
+                        //Exit program
+                        sr.ReadToEnd();
+                        continue;
                     }
                     if (_data[3].ToString() != "")
                     {

@@ -1,0 +1,17 @@
+C:\Users\yonat\Google Drive\Computers\SmartHome\Rs232-RevEng\HomeRestSrv\obj\Debug\HomeRestSrv.csprojResolveAssemblyReference.cache
+C:\Users\yonat\Google Drive\Computers\SmartHome\Rs232-RevEng\HomeRestSrv\obj\Debug\HomeRestSrv.csproj.CoreCompileInputs.cache
+C:\Users\yonat\Google Drive\Computers\SmartHome\Rs232-RevEng\HomeRestSrv\obj\Debug\HomeRestSrv.exe
+C:\Users\yonat\Google Drive\Computers\SmartHome\Rs232-RevEng\HomeRestSrv\obj\Debug\HomeRestSrv.pdb
+C:\Users\yonat\Google Drive\Computers\SmartHome\Rs232-RevEng\HomeRestSrv\HomeRestSrv.exe.config
+C:\Users\yonat\Google Drive\Computers\SmartHome\Rs232-RevEng\HomeRestSrv\HomeRestSrv.exe
+C:\Users\yonat\Google Drive\Computers\SmartHome\Rs232-RevEng\HomeRestSrv\HomeRestSrv.pdb
+C:\Users\yonat\Google Drive\Computers\SmartHome\Rs232-RevEng\HomeRestSrv\EntityFramework.dll
+C:\Users\yonat\Google Drive\Computers\SmartHome\Rs232-RevEng\HomeRestSrv\EntityFramework.SqlServer.dll
+C:\Users\yonat\Google Drive\Computers\SmartHome\Rs232-RevEng\HomeRestSrv\System.Data.SQLite.dll
+C:\Users\yonat\Google Drive\Computers\SmartHome\Rs232-RevEng\HomeRestSrv\System.Data.SQLite.EF6.dll
+C:\Users\yonat\Google Drive\Computers\SmartHome\Rs232-RevEng\HomeRestSrv\System.Data.SQLite.Linq.dll
+C:\Users\yonat\Google Drive\Computers\SmartHome\Rs232-RevEng\HomeRestSrv\EntityFramework.xml
+C:\Users\yonat\Google Drive\Computers\SmartHome\Rs232-RevEng\HomeRestSrv\EntityFramework.SqlServer.xml
+C:\Users\yonat\Google Drive\Computers\SmartHome\Rs232-RevEng\HomeRestSrv\System.Data.SQLite.xml
+C:\Users\yonat\Google Drive\Computers\SmartHome\Rs232-RevEng\HomeRestSrv\System.Data.SQLite.dll.config
+C:\Users\yonat\Google Drive\Computers\SmartHome\Rs232-RevEng\HomeRestSrv\MimeTypeMap.dll

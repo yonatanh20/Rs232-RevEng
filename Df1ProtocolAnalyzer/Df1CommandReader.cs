@@ -56,7 +56,7 @@ namespace Df1ProtocolAnalyzer
                     continue;
                 }
 
-                if (prevTransaction > 0 && prevTransaction + 1 != commandFrame.TransactionNumber)
+                if (prevTransaction != 0xFFFF && (prevTransaction + 1 != commandFrame.TransactionNumber))
                 {
                     Console.WriteLine("Warning: missing transactions between (#{0},#{1})",
                         prevTransaction, commandFrame.TransactionNumber);

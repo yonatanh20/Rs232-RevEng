@@ -1,0 +1,52 @@
+﻿http://{host}:{port}/homeinfo/app/...
+
+GET http://{host}:{port}/homeinfo/rest/history?startTime=2017-09-15T14:00:23.1234&lines=25
+
+
+{
+	[
+		{ "timestamp": "2017-09-15T14:00:23.1234",
+		   "type": "light",
+		   "name": "Yonantan window light",
+		   "state": "on"
+		},
+		{ "timestamp": "2017-09-15T14:00:23.6789",
+		   "type": "light",
+		   "name": "Dror bed light",
+		   "state": "off"
+		}
+	]
+}
+
+GET http://{host}:{port}/homeinfo/rest/devices?type=light
+
+{
+	[
+		{ "type": "light",
+		  "name": "Yonantan window light",
+		  "state": "on"
+		},
+		{ "type": "light",
+		  "name": "Dror bed light",
+		  "state": "off"
+		}
+	]
+}
+
+GET http://{host}:{port}/homeinfo/rest/devices/Yonantan%20window%20light
+
+{
+	{ "type": "light",
+	  "name": "Yonantan window light",
+	  "state": "on"
+	}
+}
+
+PUT http://{host}:{port}/homeinfo/rest/devices/Yonantan%20window%20light
+
+{
+	{ "type": "light",
+	  "name": "Yonantan east window light",
+	  "state": "on"
+	}
+}

@@ -44,7 +44,7 @@ namespace Df1ProtocolAnalyzer
 
         public IEnumerable<ByteDef> Read()
         {
-            if (!(_fileStream.Read(_data, 0, _data.Length) < _data.Length))
+            while (!(_fileStream.Read(_data, 0, _data.Length) < _data.Length))
                 yield return new ByteDef(DataByte, Timestamp, Originator);
         }
 
